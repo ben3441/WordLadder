@@ -12,8 +12,7 @@ public class WordLadderTests
     {
         var dictionary = new[] {"hull", "hulp", "held", "help"};
         var result = WordLadder.WordLadder.Solve("help", "hull", dictionary);
-
-        result.IsSuccess.Should().BeTrue();
+        
         result.Value.Should().BeEquivalentTo("help", "hulp", "hull");
     }
 
@@ -23,7 +22,6 @@ public class WordLadderTests
         var dictionary = new[] {"hull", "hat", "hit", "hot", "pot", "pit", "petty", "house", "hulp", "held", "help"};
         var result = WordLadder.WordLadder.Solve("hat", "pot", dictionary);
 
-        result.IsSuccess.Should().BeTrue();
         result.Value.Should().BeEquivalentTo("hat", "hot", "pot");
     }
 
@@ -33,7 +31,6 @@ public class WordLadderTests
         var dictionary = new[] { "hat", "hit", "hot", "pot", "pit", "pat" }; // connecting word could be 'hot' or 'pat'
         var result = WordLadder.WordLadder.Solve("hat", "pot", dictionary);
 
-        result.IsSuccess.Should().BeTrue();
         result.Value.Should().BeEquivalentTo("hat", "hot", "pot");
     }
 
@@ -42,7 +39,6 @@ public class WordLadderTests
     {
         var result = WordLadder.WordLadder.Solve("hats", "pot", new []{"hats", "pot"});
 
-        result.IsSuccess.Should().BeFalse();
         result.Error.Should().Contain(StartEndWordsDifferentLengths);
     }
 
@@ -51,7 +47,6 @@ public class WordLadderTests
     {
         var result = WordLadder.WordLadder.Solve("hat", "pot", new[] { "pit", "pot" });
 
-        result.IsSuccess.Should().BeFalse();
         result.Error.Should().Contain(StartWordNotInDictionary);
     }
 
@@ -60,7 +55,6 @@ public class WordLadderTests
     {
         var result = WordLadder.WordLadder.Solve("hat", "pet", new[] { "hat", "pot" });
 
-        result.IsSuccess.Should().BeFalse();
         result.Error.Should().Contain(EndWordNotInDictionary);
     }
 
@@ -69,7 +63,6 @@ public class WordLadderTests
     {
         var result = WordLadder.WordLadder.Solve("hat", "pet", new[] { "hat", "hot", "hit", "pet" });
 
-        result.IsSuccess.Should().BeFalse();
         result.Error.Should().Contain(NoLadderFound);
     }
 }

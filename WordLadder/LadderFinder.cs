@@ -1,18 +1,30 @@
-﻿namespace WordLadder;
+﻿using System.Collections.Concurrent;
+
+namespace WordLadder;
 
 internal static class LadderFinder
 {
-    internal static List<List<string>> Find(Dictionary<string, List<string>> indexedWords, string startWord, string endWord)
+    internal const int NotSetMin = -1;
+
+    internal static IReadOnlyCollection<List<string>> Find(Dictionary<string, List<string>> connectingWordsLookup, string startWord, string endWord)
     {
-        // search word paths
-        var laddersBruteForce = new List<List<string>>();
-        var ladder = new List<string> { startWord };
+        var laddersBruteForce = new ConcurrentStack<List<string>>();
+        var currentMinLength = NotSetMin;
 
-        IterateAllWordCombinations(ladder);
+        var startingSets = connectingWordsLookup[startWord]
+            .Select(connectingWord => new List<string> {startWord, connectingWord});
 
-        void IterateAllWordCombinations(List<string> currentLadder)
+        Parallel.ForEach(startingSets, RecursivelySearchWordCombinationsForLadders);
+
+        void RecursivelySearchWordCombinationsForLadders(IList<string> currentLadder)
         {
-            var connectors = indexedWords[currentLadder.Last()];
+            var connectors = connectingWordsLookup[currentLadder.Last()];
+
+            bool currentLadderAlreadyLongerThanShortestFound =
+                currentMinLength != NotSetMin && currentLadder.Count + 1 > currentMinLength;
+
+            if (currentLadderAlreadyLongerThanShortestFound)
+                return; 
 
             foreach (var connector in connectors)
             {
@@ -23,13 +35,26 @@ internal static class LadderFinder
 
                 if (connector == endWord)
                 {
-                    laddersBruteForce.Add(extendedLadder);
+                    UpdateMinLengthSafelyIfRequired(extendedLadder.Count);
+
+                    void UpdateMinLengthSafelyIfRequired(int newMin)
+                    {
+                        if (currentMinLength != NotSetMin && newMin >= currentMinLength) 
+                            return;
+                        while (currentMinLength == NotSetMin || newMin < currentMinLength)
+                        {
+                            if (currentMinLength == Interlocked.CompareExchange(ref currentMinLength, newMin, currentMinLength))
+                                break;
+                        }
+                    }
+
+                    laddersBruteForce.Push(extendedLadder);
                     break;
                 }
-                IterateAllWordCombinations(extendedLadder);
+                RecursivelySearchWordCombinationsForLadders(extendedLadder);
             }
         }
 
-        return laddersBruteForce;
+        return laddersBruteForce.ToList();
     }
 }

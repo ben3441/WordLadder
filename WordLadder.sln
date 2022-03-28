@@ -11,7 +11,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{8275EB41
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestWordLadderConsole", "TestWordLadderConsole\TestWordLadderConsole.csproj", "{1414013A-134C-4F0F-9FB1-AB1DB048622A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestWordLadder", "TestWordLadder\TestWordLadder.csproj", "{39854D7A-169F-43AB-9AF5-7DE082181D42}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestWordLadder", "TestWordLadder\TestWordLadder.csproj", "{39854D7A-169F-43AB-9AF5-7DE082181D42}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

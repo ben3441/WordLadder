@@ -11,14 +11,14 @@ namespace TestWordLadderConsole;
 
 [TestClass]
 [TestCategory("Integration")]
-public sealed class AppIntegrationTests
+public sealed class AppAcceptanceTests
 {
     private const string DictionaryFile = "words-english.txt";
     private const string ResultsFile = "Results.txt";
 
     [DataTestMethod]// answers taken from online solver, all words are in dictionary
     [DataRow("hove", "huge", new[] { "hove", "love", "loge", "luge", "huge" })]
-    [DataRow("mack", "many", new[] { "mack", "mace", "mane", "many" })]
+    [DataRow("mack", "many", new[] { "mack", "mark", "mary", "many" })]
     public async Task Can_solve_simple_word_ladders(string startWord, string endWord, string[] ladder)
     {
         var result = await RunAppAsync(BuildConsoleArgs(startWord, endWord)).ConfigureAwait(false);
@@ -63,7 +63,4 @@ public sealed class AppIntegrationTests
 
     private static string ConsoleArgsDictionaryFileNotPresent()
         => $"-d C:\\MadeUpFile.txt -r {ResultsFile} -e mack -s many";
-
-    private static string ConsoleArgsResultFileInvalid()
-        => $"-d {DictionaryFile} -r \\ -e mack -s many";
 }
