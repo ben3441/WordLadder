@@ -16,6 +16,13 @@ public sealed class AppAcceptanceTests
     private const string DictionaryFile = "words-english.txt";
     private const string ResultsFile = "Results.txt";
 
+    [TestCleanup]
+    public void Cleanup()
+    {
+        if (File.Exists(ResultsFile))
+            File.Delete(ResultsFile);
+    }
+
     [DataTestMethod]// answers taken from online solver, all words are in dictionary
     [DataRow("hove", "huge", new[] { "hove", "love", "loge", "luge", "huge" })]
     [DataRow("mack", "many", new[] { "mack", "mark", "mary", "many" })]
