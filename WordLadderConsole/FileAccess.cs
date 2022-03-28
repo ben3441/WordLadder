@@ -1,20 +1,31 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using CSharpFunctionalExtensions;
 
 namespace WordLadderConsole;
 
 internal static class FileAccess
 {
-    internal static string[] ReadWordDictionary(string filePath)
+    internal static Result<string[]> ReadWordDictionary(string filePath)
     {
-        return Array.Empty<string>();
+        try
+        {
+            return Result.Success(File.ReadAllLines(filePath));
+        }
+        catch (Exception e)
+        {
+            return Result.Failure<string[]>($"Failed to read word dictionary with error: '{e.Message}'");
+        }
     }
 
-    internal static void WriteOutputFile(string filePath, string[] wordLadder)
+    internal static Result WriteOutputFile(string filePath, string[] wordLadder)
     {
-        // do something...
+        try
+        {
+            File.WriteAllLines(filePath, wordLadder);
+            return Result.Success();
+        }
+        catch (Exception e)
+        {
+            return Result.Failure($"Failed to write result file with error: '{e.Message}'");
+        }
     }
 }

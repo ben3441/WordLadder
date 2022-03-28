@@ -9,4 +9,10 @@
     <PackageReference Include="CSharpFunctionalExtensions" Version="2.29.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+      <_Parameter1>TestWordLadder</_Parameter1>
+    </AssemblyAttribute>
+  </ItemGroup>
+
 </Project>

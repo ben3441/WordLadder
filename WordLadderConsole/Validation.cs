@@ -16,24 +16,6 @@ internal static class Validation
         if (string.IsNullOrWhiteSpace(options.EndWord))
             return Result.Failure($"Commandline argument '{nameof(options.EndWord)}' not set");
 
-        if (options.StartWord.Length != options.EndWord.Length)
-            return Result.Failure(
-                $"Commandline argument '{nameof(options.StartWord)}' must have the same number of letters as Commandline argument '{nameof(options.EndWord)}'");
-
-        return ValidateResultFile(options.ResultFile, nameof(options.ResultFile));
-    }
-
-    internal static Result ValidateResultFile(string filePath, string optionName)
-    {
-        try
-        {
-            var _ = new FileInfo(filePath);
-            return Result.Success();
-        }
-        catch (Exception e)
-        {
-            return Result.Failure(
-                $"Commandline argument '{optionName}' with value: '{filePath}' is invalid with error: {Environment.NewLine}{e.Message}");
-        }
+        return Result.Success();
     }
 }

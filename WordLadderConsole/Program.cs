@@ -19,13 +19,11 @@ internal class Program
     private static void Run(ProgramOptions options)
         => Validation.ValidateOptions(options)
             .Bind(() =>
-            {
-                var dictionary = FileAccess.ReadWordDictionary(options.DictionaryFilePath);
-
-                return WordLadder.WordLadder
-                    .Solve(options.StartWord, options.EndWord, dictionary)
-                    .Tap(result => FileAccess.WriteOutputFile(options.ResultFile, result));
-            })
+                FileAccess.ReadWordDictionary(options.DictionaryFilePath)
+                    .Bind(dictionary =>
+                        WordLadder.WordLadder
+                            .Solve(options.StartWord, options.EndWord, dictionary)
+                            .Bind(result => FileAccess.WriteOutputFile(options.ResultFile, result))))
             .OnFailure(ReportError);
     
 
